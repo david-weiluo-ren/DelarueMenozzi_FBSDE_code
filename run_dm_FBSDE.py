@@ -6,7 +6,8 @@ Created on Jan 28, 2016
 import argparse, sys
 from dm_expXdrift import DM_expXdrift
 from dm_linearizedXdrift import DM_linearizedXdrift
-from run_dm_iteration_helpers import add_dm_sharing_argument_to_parser
+from run_dm_iteration_helpers import add_dm_sharing_argument_to_parser, generate_file_name_from_dict,\
+    prepare_argdict_and_filename_from_parser
 def model_factory(model_type, *args, **kwargs):
     if model_type =="exp":
         return DM_expXdrift(*args, **kwargs)
@@ -43,23 +44,24 @@ def run_dm_FBSDE():
     parser.add_argument('model_type', type = str, help="exp: expXdrift model; linear: linearizedXdrift model")
     parser.add_argument('-expected_y0', type=float,nargs='?', help='initial expected y0')
     parser.add_argument('-A', type=float,nargs='?', help='A in drift of X')
-    parser.add_argument('-kappa', type=float,nargs='?', help='A in drift of X')
+    parser.add_argument('-kappa', type=float,nargs='?', help='kappa in drift of X')
     parser.add_argument('-m', type=float,nargs='?', help='terminal condition')
     parser.add_argument('-beta', type=float,nargs='?', help='beta in drift Y')
-    args = {k: v for k, v in vars(parser.parse_args()).items() if v}
-    for k, v in args.items():
-        print(k, v)
-    prefix = args.pop('prefix') if 'prefix' in args else ''
-    args_str = ("{}{}".format(k, v) for k, v in args.items())
-    filename = prefix + ("_".join(args_str))
-    model_type = args.pop('model_type')
-
-    all_expected_y0 = iterate_helper(model_type, **args)
     
     
-    with open(filename, 'w') as filehandler:
+    arg_dict, file_name = prepare_argdict_and_filename_from_parser(
+                            parser, 
+                            lambda k, v: v and (k != 'prefix') and (k != 'model_type'))
+    
+    
+    model_type = parser.parse_args().model_type
+    print("model_type ", model_type)
+    all_expected_y0 = iterate_helper(model_type, **arg_dict)
+    
+    
+    with open(file_name, 'w') as file_handler:
         for expected_y0 in all_expected_y0:
-            filehandler.write("{}\n".format(expected_y0))
+            file_handler.write("{}\n".format(expected_y0))
     
     
 
