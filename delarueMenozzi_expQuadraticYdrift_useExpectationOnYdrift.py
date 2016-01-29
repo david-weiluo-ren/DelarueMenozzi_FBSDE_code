@@ -9,7 +9,7 @@ import delarueMenozzi_expQuadraticYdrift
 reload(delarueMenozzi_expQuadraticYdrift)
 
 from delarueMenozzi_expQuadraticYdrift import DelarueMenozzi_expQuadraticYdrift
-import numpy as np
+from run_dm_iteration_helpers import dm_iterate_helper
 
 class DelarueMenozzi_expQuadraticYdrift_useExpectationOnYdrift(DelarueMenozzi_expQuadraticYdrift):
     '''
@@ -32,8 +32,19 @@ class DelarueMenozzi_expQuadraticYdrift_useExpectationOnYdrift(DelarueMenozzi_ex
     def G(self, time_index, y):
         return self.eta[time_index]
         
+def expQuadratic_factory(phase, *args, **kwargs):
+    if phase == 'init':
+        return DelarueMenozzi_expQuadraticYdrift(*args, **kwargs)
+    elif phase == 'use_expectation':
+        return DelarueMenozzi_expQuadraticYdrift_useExpectationOnYdrift(*args, **kwargs)
+    else:
+        raise Exception("phase should be " +
+                         "either 'init' for the starting phase " +
+                         "or 'use_expectation' for the following phase")
+def iterate_expQuadraticYdrift(iter_number = 20, *args, **kwargs):
+    return dm_iterate_helper(expQuadratic_factory, iter_number, *args, **kwargs)
 
-
+'''
 def iterate_expQuadraticYdrift(iter_number = 20, *args, **kwargs):
     eta = None
     system = None
@@ -51,4 +62,4 @@ def iterate_expQuadraticYdrift(iter_number = 20, *args, **kwargs):
         eta = system.expectation_g_Y
         all_etas.append(eta)
     return all_etas
-        
+'''        
