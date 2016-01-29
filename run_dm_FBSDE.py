@@ -6,7 +6,7 @@ Created on Jan 28, 2016
 import argparse, sys
 from dm_expXdrift import DM_expXdrift
 from dm_linearizedXdrift import DM_linearizedXdrift
-from run_dm_iteration_helpers import add_dm_sharing_argument_to_parser, generate_file_name_from_dict,\
+from run_dm_iteration_helpers import add_dm_sharing_argument_to_parser, \
     prepare_argdict_and_filename_from_parser
 def model_factory(model_type, *args, **kwargs):
     if model_type =="exp":

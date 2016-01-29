@@ -8,38 +8,38 @@ import delarueMenozzi_simplifedCase_base
 reload(delarueMenozzi_simplifedCase_base)
 
 from delarueMenozzi_simplifedCase_base import DelarueMenozziSimplifiedCaseBase
-from run_dm_iteration_helpers import dm_iterate_helper
+from run_dm_iteration_helpers import dm_iterate_helper, dm_iterate_then_pickle
 
 class DelarueMenozzi_G3Ydrift(DelarueMenozziSimplifiedCaseBase):
     '''
     dX_t = -Y_t dt + \sigma dW_t
-    dY_t = (Y)^3 dt + Z_t dW_t
-    X_0 = x_0, Y_T = X_T
+    dY_t = a * (Y)^3 dt + Z_t dW_t
+    X_0 = x_0, Y_T = m X_T
     
     We want to compute the distribution of
     g(Y_t) from 0 to T.
     g = y
     '''
 
-    def __init__(self, A = 1, kappa = 1, *args, **kwargs):
-        self.A = A
-        self.kappa = kappa
+    def __init__(self, a = 1, m = 1, *args, **kwargs):
+        self.a = a
+        self.m = m
         super().__init__(*args, **kwargs)
     
     def F(self, x, y):
         return -1 * y
     def G(self, time_index, y):
-        return y ** 3
+        return self.a * y ** 3
     def f(self, x):
-        return x
+        return self.m * x
     def g(self, y):
         return y 
 
 class DelarueMenozzi_G3Ydrift_useExpectationOnYdrift(DelarueMenozzi_G3Ydrift):
     '''
     dX_t = -Y_t dt + \sigma dW_t
-    dY_t = (eta)^3 dt + Z_t dW_t
-    X_0 = x_0, Y_T = X_T
+    dY_t = a * (eta)^3 dt + Z_t dW_t
+    X_0 = x_0, Y_T = m * X_T
     
     eta_t comes from the previoous iteration
     
@@ -54,7 +54,7 @@ class DelarueMenozzi_G3Ydrift_useExpectationOnYdrift(DelarueMenozzi_G3Ydrift):
         super().__init__(*args, **kwargs)
         
     def G(self, time_index, y):
-        return self.eta[time_index] ** 3
+        return self.a * self.eta[time_index] ** 3
     
     
 def G3_factory(phase, *args, **kwargs):
@@ -69,4 +69,11 @@ def G3_factory(phase, *args, **kwargs):
 def iterate_G3Ydrift(iter_number = 20, *args, **kwargs):
     return dm_iterate_helper(G3_factory, iter_number, *args, **kwargs)
 
+
+def dm_iterate_then_pickle_G3Ydrift(file_name, *args, **kwargs):
+    return dm_iterate_then_pickle(G3_factory, file_name, *args, **kwargs)
+    
+    
+    
+ 
     
