@@ -37,7 +37,7 @@ def iterate_linearizedXdrift(iter_number = 20, expected_y0 = 0.5, *args, **kwarg
     return iterate_helper('linear', iter_number, expected_y0, *args, **kwargs)
 
 
-def run_dm_expXdrift():
+def run_dm_FBSDE():
     parser = argparse.ArgumentParser(description='Process some integers.')
     parser.add_argument('model_type', type = str, help="exp: expXdrift model; linear: linearizedXdrift model")
     parser.add_argument('-x_0', type=float, nargs='?', help='x0')
@@ -73,5 +73,5 @@ def run_dm_expXdrift():
 
 
 if __name__ == '__main__':
-    sys.exit(run_dm_expXdrift())
+    sys.exit(run_dm_FBSDE())
     
