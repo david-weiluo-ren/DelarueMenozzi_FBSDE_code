@@ -6,7 +6,7 @@ Created on Jan 28, 2016
 import argparse, sys
 from dm_expXdrift import DM_expXdrift
 from dm_linearizedXdrift import DM_linearizedXdrift
-
+from run_dm_iteration_helpers import add_dm_sharing_argument_to_parser
 def model_factory(model_type, *args, **kwargs):
     if model_type =="exp":
         return DM_expXdrift(*args, **kwargs)
@@ -38,17 +38,9 @@ def iterate_linearizedXdrift(iter_number = 20, expected_y0 = 0.5, *args, **kwarg
 
 
 def run_dm_FBSDE():
-    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser = argparse.ArgumentParser()
+    parser = add_dm_sharing_argument_to_parser(parser)
     parser.add_argument('model_type', type = str, help="exp: expXdrift model; linear: linearizedXdrift model")
-    parser.add_argument('-x_0', type=float, nargs='?', help='x0')
-    parser.add_argument('-M_time', type=float, nargs='?', help='M_Time')
-    parser.add_argument('-M_space', type=float,  nargs='?', help='M_Space')
-    parser.add_argument('-sigma', type=float,  nargs='?', help='sigma')
-    parser.add_argument('-iter_number', type=int,nargs='?', help='number of iteration')
-    parser.add_argument('-num_MC_path', type=int, help='numbder of sampling paths in MC')
-    parser.add_argument('-prefix', type=str, help='prefix of the name of figure')
-    parser.add_argument('-delta_time', type=float,nargs='?', help='time step size')
-    parser.add_argument('-delta_space', type=float,nargs='?', help='spatial step size')
     parser.add_argument('-expected_y0', type=float,nargs='?', help='initial expected y0')
     parser.add_argument('-A', type=float,nargs='?', help='A in drift of X')
     parser.add_argument('-kappa', type=float,nargs='?', help='A in drift of X')
@@ -57,11 +49,11 @@ def run_dm_FBSDE():
     args = {k: v for k, v in vars(parser.parse_args()).items() if v}
     for k, v in args.items():
         print(k, v)
-    model_type = args.pop('model_type')
     prefix = args.pop('prefix') if 'prefix' in args else ''
     args_str = ("{}{}".format(k, v) for k, v in args.items())
     filename = prefix + ("_".join(args_str))
-    
+    model_type = args.pop('model_type')
+
     all_expected_y0 = iterate_helper(model_type, **args)
     
     
