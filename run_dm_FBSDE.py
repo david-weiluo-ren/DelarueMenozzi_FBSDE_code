@@ -48,13 +48,14 @@ def run_dm_FBSDE():
     parser.add_argument('-m', type=float,nargs='?', help='terminal condition')
     parser.add_argument('-beta', type=float,nargs='?', help='beta in drift Y')
     
-    
+    model_type = parser.parse_args().model_type
     arg_dict, file_name = prepare_argdict_and_filename_from_parser(
                             parser, 
+                            model_type,
                             lambda k, v: v and (k != 'prefix') and (k != 'model_type'))
     
     
-    model_type = parser.parse_args().model_type
+    
     print("model_type ", model_type)
     all_expected_y0 = iterate_helper(model_type, **arg_dict)
     

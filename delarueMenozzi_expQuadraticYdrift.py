@@ -15,7 +15,7 @@ import numpy as np
 class DelarueMenozzi_expQuadraticYdrift(DelarueMenozziSimplifiedCaseBase):
     '''
     dX_t = -Y_t dt + \sigma dW_t
-    dY_t = A * e^{- \kappa^2 Y_t} dt + Z_t dW_t
+    dY_t = A * e^{- \kappa Y_t^2} dt + Z_t dW_t
     X_0 = x_0, Y_T = m X_T
     
     We want to compute the distribution of

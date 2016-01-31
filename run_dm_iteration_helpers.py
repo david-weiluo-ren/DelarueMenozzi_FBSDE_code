@@ -38,9 +38,9 @@ def add_dm_sharing_argument_to_parser(parser):
     parser.add_argument('-delta_space', type=float,nargs='?', help='spatial step size')
     return parser
 
-def generate_file_name_from_dict(prefix, arg_dict):
-    args_str = ("{}{}".format(k, v) for k, v in arg_dict.items())
-    return prefix + ("_".join(args_str))
+def generate_file_name_from_dict(prefix, model_type, arg_dict):
+    args_str = ("{}{}".format(k, v) for k, v in sorted(arg_dict.items()))
+    return prefix + "_modeltype_{}_".format(model_type) + ("_".join(args_str))
 
 def dm_iterate_then_pickle(model_factory, file_name, *args, **kwargs):
     all_etas = dm_iterate_helper(model_factory, *args, **kwargs)
@@ -49,7 +49,7 @@ def dm_iterate_then_pickle(model_factory, file_name, *args, **kwargs):
     
     
     
-def prepare_argdict_and_filename_from_parser(parser, k_v_predicate):
+def prepare_argdict_and_filename_from_parser(parser, model_type, k_v_predicate):
     args = parser.parse_args()
     arg_dict = {k: v for k, v in vars(args).items() 
                 if k_v_predicate(k, v)}
@@ -58,6 +58,7 @@ def prepare_argdict_and_filename_from_parser(parser, k_v_predicate):
         print(k, v)
         
     file_name = generate_file_name_from_dict(prefix = args.prefix or '',
+                                             model_type = model_type,
                                             arg_dict = arg_dict)    
     
     return (arg_dict, file_name)
