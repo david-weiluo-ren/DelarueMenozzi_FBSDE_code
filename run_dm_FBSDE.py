@@ -110,7 +110,8 @@ class DM_FBSDE_runner():
     def generate_argument(self):
         self.model_type = self.parser.parse_args().model_type
         self.use_initial_expectedY0 = self.parser.parse_args().initial_expectedY0
-        self.info.update({'model_type' : self.model_type})
+        self.info.update({'model_type' : self.model_type, 
+                          'useInitY0': str(self.use_initial_expectedY0)})
         self.arg_dict, self.file_name = prepare_argdict_and_filename_from_parser(
                             self.parser, 
                             self.info,
