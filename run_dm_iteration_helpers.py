@@ -4,7 +4,7 @@ Created on Jan 28, 2016
 @author: weiluo
 '''
 import argparse, pickle
-
+import numpy as np
 
 
 def dm_iterate_helper(model_factory, iter_number = 20, *args, **kwargs):
@@ -48,7 +48,7 @@ def dm_iterate_then_pickle(model_factory, file_name, *args, **kwargs):
     all_etas = dm_iterate_helper(model_factory, *args, **kwargs)
     with open(file_name, 'wb') as file_handler:
         pickle.dump(all_etas, file_handler)
-    
+
     
     
 def prepare_argdict_and_filename_from_parser(parser, info, k_v_predicate):

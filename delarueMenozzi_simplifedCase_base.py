@@ -132,7 +132,7 @@ class DelarueMenozziSimplifiedCaseBase:
         curr_forward = self.forward_variable[-1]
         curr_backward = curr_link[self.spatial_point_to_index(curr_forward)]
         forward_increment = self.F(curr_forward, 
-                                   curr_backward) * self.delta_time * self.sigma + MC_sample
+                                   curr_backward) * self.delta_time + self.sigma * MC_sample
         new_forward = curr_backward + forward_increment
         new_backward = next_link[self.spatial_point_to_index(new_forward)]
         self.forward_variable.append(new_forward)
