@@ -27,6 +27,8 @@ def run_dm_FBSDE_arrayOfInitialX():
                  dm_FBSDE_runner.arg_dict['initX_deltaX'])
     del dm_FBSDE_runner.arg_dict['initX_bound']
     del dm_FBSDE_runner.arg_dict['initX_deltaX']
+    if 'x_0' in dm_FBSDE_runner.arg_dict:
+        del dm_FBSDE_runner.arg_dict['x_0']
     initX_y0_list = []
     for init_x in init_x_array:
         all_expected_y0 = iterate_helper_withIinitialExpectedY0(dm_FBSDE_runner.model_type, 
