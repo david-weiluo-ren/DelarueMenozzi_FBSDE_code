@@ -42,7 +42,7 @@ def run_dm_FBSDE_arrayOfInitialX():
         initX_y0_list.append((init_x, all_expected_y0[-1]))
     
     with open(dm_FBSDE_runner.file_name, 'w') as file_handler:
-        for init_x, y_0 in all_expected_y0:
+        for init_x, y_0 in initX_y0_list:
             file_handler.write("init_x: {}, y0: {}".format(init_x, y_0))
     
 if __name__ == '__main__':
