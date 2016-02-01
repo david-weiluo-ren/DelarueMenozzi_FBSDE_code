@@ -19,7 +19,8 @@ def generate_dm_FBSDE_arrayOfInitialX_parser(parser):
 
 
 def run_dm_FBSDE_arrayOfInitialX():
-    dm_FBSDE_runner = DM_FBSDE_runner(generate_dm_FBSDE_arrayOfInitialX_parser)
+    dm_FBSDE_runner = DM_FBSDE_runner(generate_dm_FBSDE_arrayOfInitialX_parser,
+                                      info={"arrayOfInitialX": ""})
     dm_FBSDE_runner.generate_argument()
     
     init_x_array = np.arange(-1 * abs(dm_FBSDE_runner.arg_dict['initX_bound']),

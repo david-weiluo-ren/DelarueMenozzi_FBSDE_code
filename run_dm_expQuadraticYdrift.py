@@ -18,7 +18,7 @@ def run_dm_expQuadraticYdrift():
     
     arg_dict, file_name = prepare_argdict_and_filename_from_parser(
                             parser, 
-                            "expQuadraticYdrift",
+                            {"model_type", "expQuadraticYdrift"},
                             lambda k, v: v and (k != 'prefix'))
     dm_iterate_then_pickle_expQuadraticYdrift(file_name, **arg_dict)
     

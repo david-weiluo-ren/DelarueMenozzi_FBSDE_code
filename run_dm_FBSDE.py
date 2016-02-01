@@ -96,7 +96,8 @@ def generate_dm_FBSDE_parser(parser):
 
 class DM_FBSDE_runner():
     def __init__(self, 
-                 generate_dm_FBSDE_parser_func):
+                 generate_dm_FBSDE_parser_func,
+                 info={}):
         self.parser = argparse.ArgumentParser()
         self.parser = generate_dm_FBSDE_parser_func(self.parser)
 
@@ -105,12 +106,14 @@ class DM_FBSDE_runner():
         
         self.arg_dict = None
         self.file_name = None
+        self.info=info.copy()
     def generate_argument(self):
         self.model_type = self.parser.parse_args().model_type
         self.use_initial_expectedY0 = self.parser.parse_args().initial_expectedY0
+        self.info.update({'model_type' : self.model_type})
         self.arg_dict, self.file_name = prepare_argdict_and_filename_from_parser(
                             self.parser, 
-                            {'model_type' : self.model_type},
+                            self.info,
                             lambda k, v: v and (k != 'prefix') 
                                            and (k != 'model_type')
                                            and (k != 'initial_expectedY0'))
