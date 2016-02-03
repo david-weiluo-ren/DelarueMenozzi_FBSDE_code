@@ -23,7 +23,7 @@ def run_dm_FBSDE_arrayOfInitialX():
                                       info={"arrayOfInitialX": ""})
     dm_FBSDE_runner.generate_argument()
     
-    init_x_array = np.arange(-1 * abs(dm_FBSDE_runner.arg_dict['initX_bound']),
+    init_x_array = np.arange(0,
                  abs(dm_FBSDE_runner.arg_dict['initX_bound']),
                  dm_FBSDE_runner.arg_dict['initX_deltaX'])
     del dm_FBSDE_runner.arg_dict['initX_bound']
@@ -45,7 +45,7 @@ def run_dm_FBSDE_arrayOfInitialX():
     
     with open(dm_FBSDE_runner.file_name, 'w') as file_handler:
         for init_x, y_0 in initX_y0_list:
-            file_handler.write("init_x: {}, y0: {}".format(init_x, y_0))
+            file_handler.write("init_x: {}, y0: {}\n".format(init_x, y_0))
     
 if __name__ == '__main__':
     sys.exit(run_dm_FBSDE_arrayOfInitialX())
