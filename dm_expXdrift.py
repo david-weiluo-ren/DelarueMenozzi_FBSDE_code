@@ -83,10 +83,11 @@ class DM_expXdrift_linearYdrift(DM_expXdrift):
     
 class DM_expXdrift_linearYdrift_useExpectationOnYdrift(DM_expXdrift_linearYdrift):
     '''
-    dQ_t = [Ae^{-\kappa \Delta^b_t} - Ae^{-\kappa \Delta^a_t}] dt + \sigma dB_t
-    dY_t = -2\beta eta_t dt + Z_t dB_t
-    Q_0 = q_0; Y_T = -2m Q_T
-    where \Delta^b_t = 1 / \kappa - Y_t; \Delta^a_t = 1 / \kappa + Y_t
+    dX_t = Ae^{-1}[e^{\kappa Y_t} - e^{-\kappa Y_t}] dt + \sigma dW_t
+    dY_t = -2 \beta * \eta_t dt + Z_t dW_t
+    X_0 = x_0, Y_T = -2m * X_T
+    we want to compute the distribution of 
+    Y_t
     '''
     
     
