@@ -5,7 +5,7 @@ Created on Jan 28, 2016
 '''
 
 from dm_expXdrift import DM_expXdrift
-from run_dm_iteration_helpers import dm_iterate_then_pickle
+from run_dm_iteration_helpers import dm_iterate_then_pickle, dm_iterate_helper
 
 
 class DM_linearizedXdrift(DM_expXdrift):
@@ -76,7 +76,7 @@ class DM_linearizedXdrift_linearYdrift_useExpectationOnYdrift(DM_linearizedXdrif
         return -2 * self.beta * self.eta[time_index]
 
 
-def linearizdeXdrift_linearYdrift_factory(phase, *args, **kwargs):
+def linearizdXdrift_linearYdrift_factory(phase, *args, **kwargs):
     if phase == 'init':
         return DM_linearizedXdrift_linearYdrift(*args, **kwargs)
     elif phase == 'use_expectation':
@@ -86,9 +86,14 @@ def linearizdeXdrift_linearYdrift_factory(phase, *args, **kwargs):
                          "either 'init' for the starting phase " +
                          "or 'use_expectation' for the following phase")
    
-    
+def iterate_linearXdrift_linearYdrift(iter_number = 20, *args, **kwargs):
+    return dm_iterate_helper(linearizdXdrift_linearYdrift_factory,
+                             iter_number,
+                             *args, **kwargs)
+
+
 def dm_iterate_then_pickle_linearizedXdrift_linearYdrift(file_name, *args, **kwargs):
-    return dm_iterate_then_pickle(linearizdeXdrift_linearYdrift_factory,
+    return dm_iterate_then_pickle(linearizdXdrift_linearYdrift_factory,
                                   file_name,
                                   *args, **kwargs)
     

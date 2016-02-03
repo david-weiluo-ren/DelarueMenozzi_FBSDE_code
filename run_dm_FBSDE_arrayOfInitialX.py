@@ -11,10 +11,12 @@ import numpy as np
 import sys
 def generate_dm_FBSDE_arrayOfInitialX_parser(parser):
     parser = generate_dm_FBSDE_parser(parser)
+    parser = add_initX_arg_parser(parser)
+    return parser
+def add_initX_arg_parser(parser):
     parser.add_argument('-initX_bound', type=float,nargs='?', default=5, help='bound of initial X used in simulation')
     parser.add_argument('-initX_deltaX', type=float,nargs='?', default=0.05, help='step size of initial X used in simulation')
     return parser
-
     
 
 
