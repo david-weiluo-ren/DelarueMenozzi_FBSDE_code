@@ -45,8 +45,9 @@ class DM_expXdrift(DelarueMenozziSimplifiedCaseBase):
         self.expected_y0 = expected_y0
         self.beta = beta
     def F(self, x, y):
-        exp_y = np.exp(-self.kappa * y)
-        return self.A * np.exp(-1) * (exp_y - 1 / exp_y)
+        exp_y = np.exp(self.kappa * y)
+        exp_neg_y = np.exp(-self.kappa * y)
+        return self.A * np.exp(-1) * (exp_y - exp_neg_y)
     def G(self, time_index, y):
         return -2 * self.beta * self.expected_y0 * np.exp(-2 * self.beta * self.time_grid[time_index])
     
@@ -81,7 +82,7 @@ class DM_expXdrift_linearYdrift(DM_expXdrift):
         return -2 * self.beta * y
     
     
-class DM_expXdrift_linearYdrift_useExpectationOnYdrift(DM_expXdrift_linearYdrift):
+class DM_expXdrift_linearYdrift_useExpectationOnYdrift(DM_expXdrift):
     '''
     dX_t = Ae^{-1}[e^{\kappa Y_t} - e^{-\kappa Y_t}] dt + \sigma dW_t
     dY_t = -2 \beta * \eta_t dt + Z_t dW_t
