@@ -121,7 +121,7 @@ class DelarueMenozziSimplifiedCaseBase:
         
     def simulate_forward(self):
         y_0 = self.link[-1][self.spatial_point_to_index(self.x_0)]
-        self.expectation_g_Y.append(y_0)
+        self.expectation_g_Y.append(self.g(y_0))
         for i in range(self.num_time_grid):
             self.one_step_forward(i)
     

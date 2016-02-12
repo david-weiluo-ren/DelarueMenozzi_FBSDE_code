@@ -17,8 +17,8 @@ def dm_iterate_helper(model_factory, iter_number = 20, *args, **kwargs):
             system = model_factory('init', *args, **kwargs)
         else:
             system = model_factory('use_expectation',
+                                   *args,
                                    eta = eta, 
-                                   *args, 
                                    **kwargs)
         system.compute_all_link()
         system.simulate_forward()
