@@ -7,7 +7,12 @@ import argparse, pickle
 import numpy as np
 
 
-def dm_iterate_helper(model_factory, iter_number = 20, *args, **kwargs):
+def dm_iterate_helper(model_factory, 
+                      iter_number = 20,
+                      new_iter_weight = 1, 
+                      *args, 
+                      **kwargs):
+    assert(new_iter_weight > 0 and new_iter_weight <= 1)
     eta = None
     system = None
     all_etas = [] 
@@ -22,7 +27,10 @@ def dm_iterate_helper(model_factory, iter_number = 20, *args, **kwargs):
                                    **kwargs)
         system.compute_all_link()
         system.simulate_forward()
-        eta = system.expectation_g_Y
+        
+        eta = system.expectation_g_Y\
+              if i == 0\
+              else eta * (1 - new_iter_weight) + system.expectation_g_Y * new_iter_weight
         all_etas.append(eta)
     return all_etas
 
@@ -36,6 +44,9 @@ def add_dm_sharing_argument_to_parser(parser):
     parser.add_argument('-prefix', type=str, help='prefix of the name of figure')
     parser.add_argument('-delta_time', type=float,nargs='?', help='time step size')
     parser.add_argument('-delta_space', type=float,nargs='?', help='spatial step size')
+    parser.add_argument('-new_iter_weight', type=float, nargs='?', help='the weight of new expectation in the iteration' +
+                                                                         "should be between 0 and 1. 0: no update at all. 1: all new update." )
+    
     return parser
 
 def generate_file_name_from_dict(prefix, info, arg_dict):
