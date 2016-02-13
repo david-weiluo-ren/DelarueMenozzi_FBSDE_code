@@ -28,9 +28,9 @@ def dm_iterate_helper(model_factory,
         system.compute_all_link()
         system.simulate_forward()
         
-        eta = system.expectation_g_Y\
+        eta = np.asarray(system.expectation_g_Y)\
               if i == 0\
-              else eta * (1 - new_iter_weight) + system.expectation_g_Y * new_iter_weight
+              else eta * (1 - new_iter_weight) + np.asarray(system.expectation_g_Y) * new_iter_weight
         all_etas.append(eta)
     return all_etas
 
