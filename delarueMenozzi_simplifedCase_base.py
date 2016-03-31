@@ -66,6 +66,7 @@ class DelarueMenozziSimplifiedCaseBase:
     
         
     def initialization(self):
+        self.link[:] = []
         self.link.append(self.f(self.space_grid))
         
     def one_step_back(self, time_index):
