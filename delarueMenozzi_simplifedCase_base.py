@@ -85,7 +85,8 @@ class DelarueMenozziSimplifiedCaseBase:
         MC_sample = np.random.randn(self.num_MC_path) * np.sqrt(self.delta_time)
         x_value = self.space_grid[x_index]
         approximated_y_value = curr_link[x_index]
-        simulation_result = self.function_to_simulate(x_value,
+        simulation_result = self.function_to_simulate(time_index,
+                                                      x_value,
                                                       approximated_y_value,
                                                       curr_link,
                                                       MC_sample)
@@ -93,11 +94,12 @@ class DelarueMenozziSimplifiedCaseBase:
                                                                  approximated_y_value)
      
     def function_to_simulate(self,
+                             time_index,
                              x_value,
                              y_value,
                              curr_link,
                              MC_sample):
-        simulated_new_x = x_value + self.F(x_value, y_value) * self.delta_time + self.sigma*MC_sample
+        simulated_new_x = x_value + self.F(time_index, x_value, y_value) * self.delta_time + self.sigma*MC_sample
         return curr_link[self.spatial_point_to_index(simulated_new_x)]
                 
     def spatial_point_to_index(self, x):
@@ -132,7 +134,8 @@ class DelarueMenozziSimplifiedCaseBase:
         MC_sample = np.random.randn(self.num_MC_path) * np.sqrt(self.delta_time)
         curr_forward = self.forward_variable[-1]
         curr_backward = curr_link[self.spatial_point_to_index(curr_forward)]
-        forward_increment = self.F(curr_forward, 
+        forward_increment = self.F(time_index,
+                                   curr_forward, 
                                    curr_backward) * self.delta_time + self.sigma * MC_sample
         new_forward = curr_forward + forward_increment
         new_backward = next_link[self.spatial_point_to_index(new_forward)]

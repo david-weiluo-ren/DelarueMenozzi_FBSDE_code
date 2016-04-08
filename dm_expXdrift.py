@@ -44,7 +44,7 @@ class DM_expXdrift(DelarueMenozziSimplifiedCaseBase):
         self.m = m
         self.expected_y0 = expected_y0
         self.beta = beta
-    def F(self, x, y):
+    def F(self, time_index, x, y):
         exp_y = np.exp(self.kappa * y)
         exp_neg_y = np.exp(-self.kappa * y)
         return self.A * np.exp(-1) * (exp_y - exp_neg_y)
@@ -99,8 +99,49 @@ class DM_expXdrift_linearYdrift_useExpectationOnYdrift(DM_expXdrift):
         
     def G(self, time_index, y):
         return -2 * self.beta * self.eta[time_index]
+   
+class DM_expXdriftWithExpectationOnY_linearYdrift_useExpectationOnYdrift(DM_expXdrift_linearYdrift_useExpectationOnYdrift):
+    '''
+    dX_t = Ae^{-1}[e^{\kappa Y_t} - e^{-\kappa Y_t}] dt + \sigma dW_t
+    dY_t = -2 \beta * \eta_t dt + Z_t dW_t
+    X_0 = x_0, Y_T = -2m * X_T
+    we want to compute the distribution of 
+    Y_t
+    '''
     
     
+    
+    def __init__(self,  *args, **kwargs):
+        super().__init__(*args, **kwargs)
+    def F(self, time_index, x, y):
+        exp_y_with_expectation = np.exp(self.kappa * self.eta[time_index])
+        exp_neg_y_with_expectation = np.exp(-self.kappa * self.eta[time_index])
+        return self.A * np.exp(-1) * (exp_y_with_expectation - exp_neg_y_with_expectation)
+
+
+
+
+def expXdriftWithExpectationOnY_linearYdrift_factory(phase, *args, **kwargs):
+    if phase == 'init':
+        return DM_expXdrift_linearYdrift(*args, **kwargs)
+    elif phase == 'use_expectation':
+        return DM_expXdriftWithExpectationOnY_linearYdrift_useExpectationOnYdrift(*args, **kwargs)
+    else:
+        raise Exception("phase should be " +
+                         "either 'init' for the starting phase " +
+                         "or 'use_expectation' for the following phase")
+
+
+def iterate_expXdriftWithExpectationOnY_linearYdrift(iter_number = 20, *args, **kwargs):
+    return dm_iterate_helper(expXdriftWithExpectationOnY_linearYdrift_factory,
+                             iter_number,
+                             *args, **kwargs)
+def dm_iterate_then_pickle_expXdriftWithExpectationOnY_linearYdrift(file_name, *args, **kwargs):
+    return dm_iterate_then_pickle(expXdriftWithExpectationOnY_linearYdrift_factory,
+                                  file_name,
+                                  *args, **kwargs)
+    
+
 def expXdrift_linearYdrift_factory(phase, *args, **kwargs):
     if phase == 'init':
         return DM_expXdrift_linearYdrift(*args, **kwargs)

@@ -29,7 +29,7 @@ class DelarueMenozzi_allLinear(DelarueMenozziSimplifiedCaseBase):
         self.K = K
         self.m = m
     
-    def F(self, x, y):
+    def F(self, time_index, x, y):
         return -1 * y
     def G(self, time_index, y):
         return self.K * y

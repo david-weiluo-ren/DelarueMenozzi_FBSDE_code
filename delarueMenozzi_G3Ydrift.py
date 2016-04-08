@@ -27,7 +27,7 @@ class DelarueMenozzi_G3Ydrift(DelarueMenozziSimplifiedCaseBase):
         self.k = k
         super().__init__(*args, **kwargs)
     
-    def F(self, x, y):
+    def F(self, time_index, x, y):
         return -1 * self.k * y
     def G(self, time_index, y):
         return self.a * y ** 3

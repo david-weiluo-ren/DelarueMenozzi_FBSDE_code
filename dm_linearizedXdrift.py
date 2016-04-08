@@ -28,7 +28,7 @@ class DM_linearizedXdrift(DM_expXdrift):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-    def F(self, x, y):
+    def F(self, time_index,  x, y):
         return 2 * self.A * self.kappa * y
         
         
