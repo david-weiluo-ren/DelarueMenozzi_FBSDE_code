@@ -6,7 +6,8 @@ Created on Jan 28, 2016
 
 from importlib import reload
 import delarueMenozzi_simplifedCase_base
-from run_dm_iteration_helpers import dm_iterate_helper, dm_iterate_then_pickle
+from run_dm_iteration_helpers import dm_iterate_helper, dm_iterate_then_pickle,\
+    dm_use_eta_then_pickle
 reload(delarueMenozzi_simplifedCase_base)
 
 from delarueMenozzi_simplifedCase_base import DelarueMenozziSimplifiedCaseBase
@@ -162,7 +163,10 @@ def dm_iterate_then_pickle_expXdrift_linearYdrift(file_name, *args, **kwargs):
     
     
     
-    
+def dm_use_eta_then_pickle_expXdrift_linearYdrift(file_name, *args, **kwargs):
+    return dm_use_eta_then_pickle(expXdrift_linearYdrift_factory,
+                                  file_name,
+                                  *args, **kwargs)
     
     
     

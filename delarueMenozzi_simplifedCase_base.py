@@ -122,11 +122,16 @@ class DelarueMenozziSimplifiedCaseBase:
         for i in range(self.num_time_grid):
             self.one_step_back(-1 * (i + 1))
         
-    def simulate_forward(self):
+    def simulate_forward(self, func=None):
+        self.forward_variable[:] = [self.x_0 * np.ones(self.num_MC_path)]
+        self.expectation_g_Y[:] = []
+
+        if not func:
+            func = self.one_step_forward
         y_0 = self.link[-1][self.spatial_point_to_index(self.x_0)]
         self.expectation_g_Y.append(self.g(y_0))
         for i in range(self.num_time_grid):
-            self.one_step_forward(i)
+            func(i)
     
     def one_step_forward(self, time_index):
         curr_link = self.link[-1 * (time_index + 1)]
@@ -143,7 +148,9 @@ class DelarueMenozziSimplifiedCaseBase:
         self.expectation_g_Y.append(np.mean(self.g(new_backward)))                                   
         
         
-        
+    
+    
+            
         
         
         
