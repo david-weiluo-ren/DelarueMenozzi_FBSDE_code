@@ -100,6 +100,7 @@ class DelarueMenozziSimplifiedCaseBase:
                              curr_link,
                              MC_sample):
         simulated_new_x = x_value + self.F(time_index, x_value, y_value) * self.delta_time + self.sigma*MC_sample
+
         return curr_link[self.spatial_point_to_index(simulated_new_x)]
                 
     def spatial_point_to_index(self, x):
